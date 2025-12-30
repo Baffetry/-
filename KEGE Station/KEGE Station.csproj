@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>KEGE_Station</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>KEGE</AssemblyName>
+    <ApplicationIcon>Icons\main.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Fonts\Rajdhani-Bold.ttf" />
+    <None Remove="Fonts\Rajdhani-Light.ttf" />
+    <None Remove="Fonts\Rajdhani-Medium.ttf" />
+    <None Remove="Fonts\Rajdhani-Regular.ttf" />
+    <None Remove="Fonts\Rajdhani-SemiBold.ttf" />
+    <None Remove="Icons\innerIcon.ico" />
+    <None Remove="Resources\back96x96.png" />
+    <None Remove="Resources\erase96x96.png" />
+    <None Remove="Resources\home96x96.png" />
+    <None Remove="Resources\lamp96x96.png" />
+    <None Remove="Resources\Logo_demidovskiy_universitet.png" />
+    <None Remove="Resources\plus96x96.png" />
+    <None Remove="Resources\save96x96.png" />
+    <None Remove="Resources\select96x96.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Icons\main.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\Rajdhani-SemiBold.ttf" />
+    <Resource Include="Icons\innerIcon.ico" />
+    <Resource Include="Resources\back96x96.png" />
+    <Resource Include="Resources\erase96x96.png" />
+    <Resource Include="Resources\home96x96.png" />
+    <Resource Include="Resources\lamp96x96.png" />
+    <Resource Include="Resources\Logo_demidovskiy_universitet.png" />
+    <Resource Include="Resources\plus96x96.png" />
+    <Resource Include="Resources\save96x96.png" />
+    <Resource Include="Resources\select96x96.png" />
+  </ItemGroup>
+
+</Project>
