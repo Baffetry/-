@@ -1,5 +1,9 @@
-﻿using System.Windows;
+﻿using Option_Generator;
+using System.IO;
+using System.Text.Json;
+using System.Windows;
 using System.Windows.Controls;
+using Testing_Option;
 
 namespace KEGE_Station
 {
@@ -8,6 +12,8 @@ namespace KEGE_Station
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string taskBasePath = @"D:\\Data\\Files\\Задания КЕГЭ";
+        private string savePath = @"D:\Temp\Options";
         private GridFacade facade = new GridFacade();
 
         public MainWindow()
@@ -20,8 +26,6 @@ namespace KEGE_Station
         private void SetGrids()
         {
             GridFacade.SetLogo(Logo);
-            GridFacade.SetGPB(GeneratorPanelButtons);
-            GridFacade.SetCOOP(CreateOwnOptionPanel);
             GridFacade.SetGOP(GenerateOptionsPanel);
             GridFacade.SetEOP(EditOptionPanel);
             GridFacade.SetCRP(CheckResultPanel);
@@ -34,10 +38,6 @@ namespace KEGE_Station
             ButtonBehavior.Apply(OpenGenerator_btn);
             ButtonBehavior.Apply(OpenEdit_btn);
             ButtonBehavior.Apply(OpenResults_btn);
-            ButtonBehavior.Apply(CreateOwnOption_btn);
-            ButtonBehavior.Apply(GenerateOptions_btn);
-            ButtonBehavior.Apply(CreateOwnOption_AddTask_btn);
-            ButtonBehavior.Apply(CreateOwnOption_Save_btn);
             ButtonBehavior.Apply(GenerateOptionsPanel_Generate_btn);
             ButtonBehavior.Apply(EditOptionPanel_AddTask_btn);
             ButtonBehavior.Apply(EditOptionPanel_Save_btn);
@@ -45,10 +45,9 @@ namespace KEGE_Station
             ButtonBehavior.Apply(ChoiceRepository);
 
             // Reg behavior
-            ButtonBehavior.Apply(CreateOwnOption_Back_btn, true);
-            ButtonBehavior.Apply(CreateOwnOption_Erase_btn, true);
             ButtonBehavior.Apply(GenerateOptionsPanel_Back_btn, true);
             ButtonBehavior.Apply(EditOptionPanel_Erase_btn, true);
+            ButtonBehavior.Apply(Exit_btn, true);
         }
 
         #region Buttons
@@ -66,47 +65,40 @@ namespace KEGE_Station
             facade.OpenGenerator();
         }
 
-        private void GenerateOptions_btn_Click(object sender, RoutedEventArgs e)
-        {
-            facade.OpenGeneratorOptions();
-        }
-
         #region Generate options buttons
         private void GenerateOptionsPanel_Generate_btn_Click(object sender, RoutedEventArgs e)
         {
+            if (!int.TryParse(AmountOfOptions.Text, out int count))
+            {
+                MessageBox.Show("Введите кол-во вариантов", "Предупреждение",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
+            var generator = new OptionGenerator(taskBasePath);
+
+            for (int i = 0; i < count; i++)
+            {
+                TestingOption option = generator.GetOption();
+
+                string fileName = $"Вариант_{i + 1:000}_{DateTime.Now:dd-MM-yyyy}.json";
+                string filePath = Path.Combine(savePath, fileName);
+
+                string json = JsonSerializer.Serialize(option, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                });
+
+                File.WriteAllText(filePath, json);
+            }
+
+            MessageBox.Show($"Создано {count} вариантов в папке: {savePath}",
+                       "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void GenerateOptionsPanel_Back_btn_Click(object sender, RoutedEventArgs e)
         {
-            facade.OpenGenerator();
-        }
-        #endregion
-
-        private void CreateOwnOption_btn_Click(object sender, RoutedEventArgs e)
-        {
-            facade.OpenOptionCreator();
-        }
-
-        #region Create own option buttons
-        private void CreateOwnOption_Back_btn_Click(object sender, RoutedEventArgs e)
-        {
-            facade.OpenGenerator();
-        }
-
-        private void CreateOwnOption_Erase_btn_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void CreateOwnOption_AddTask_btn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CreateOwnOption_Save_btn_Click(object sender, RoutedEventArgs e)
-        {
-
+            facade.OpenLogo();
         }
         #endregion
         #endregion
@@ -152,24 +144,16 @@ namespace KEGE_Station
         }
         #endregion
 
+        #region Exit
+        private void Exit_btn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        #endregion
         #endregion
 
         #region ScrollViewer
 
-        #region Create own option
-        private void CreateOwnOption_ScrollViewer_ScrollChanged(object sender, System.Windows.Controls.ScrollChangedEventArgs e)
-        {
-
-        }
-
-        private void CreateOwnOption_ScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
-        {
-            CreateOwnOption_ScrollViewer.ScrollToVerticalOffset(CreateOwnOption_ScrollViewer.VerticalOffset - e.Delta);
-            e.Handled = true;
-        }
-        #endregion
-
-        #region Check result panel
         private void CheckResultPanel_ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
 
@@ -177,10 +161,18 @@ namespace KEGE_Station
 
         private void CheckResultPanel_ScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
-            CreateOwnOption_ScrollViewer.ScrollToVerticalOffset(CreateOwnOption_ScrollViewer.VerticalOffset - e.Delta);
-            e.Handled = true;
+
         }
-        #endregion
+
+        private void EditOptionPanel_ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+
+        }
+
+        private void EditOptionPanel_ScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+
+        }
         #endregion
 
         #region Text box input handler

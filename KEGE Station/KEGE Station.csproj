@@ -19,6 +19,8 @@
     <None Remove="Fonts\Rajdhani-SemiBold.ttf" />
     <None Remove="Icons\innerIcon.ico" />
     <None Remove="Resources\back96x96.png" />
+    <None Remove="Resources\edusite_blue_logo.png" />
+    <None Remove="Resources\edusite_default_logo.png" />
     <None Remove="Resources\erase96x96.png" />
     <None Remove="Resources\home96x96.png" />
     <None Remove="Resources\lamp96x96.png" />
@@ -36,10 +38,12 @@
     <Resource Include="Fonts\Rajdhani-SemiBold.ttf" />
     <Resource Include="Icons\innerIcon.ico" />
     <Resource Include="Resources\back96x96.png" />
+    <Resource Include="Resources\edusite_blue_logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\erase96x96.png" />
     <Resource Include="Resources\home96x96.png" />
     <Resource Include="Resources\lamp96x96.png" />
-    <Resource Include="Resources\Logo_demidovskiy_universitet.png" />
     <Resource Include="Resources\plus96x96.png" />
     <Resource Include="Resources\save96x96.png" />
     <Resource Include="Resources\select96x96.png" />
